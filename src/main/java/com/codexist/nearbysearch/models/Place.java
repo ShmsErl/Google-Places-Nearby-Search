@@ -14,7 +14,7 @@ public class Place {
     private String placeId;
     @Column(name = "name")
     private String name;
-    @Column(name = "address")
+    @Column(name = "vicinity")
     private String vicinity;
 
     @Embedded
@@ -49,7 +49,7 @@ public class Place {
     public Place(String placeId, String name, String address, Geometry geometry) {
         this.placeId = placeId;
         this.name = name;
-        this.address = address;
+        this.vicinity = address;
         this.geometry = geometry;
     }
 
