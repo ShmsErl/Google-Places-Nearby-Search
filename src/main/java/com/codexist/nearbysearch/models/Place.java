@@ -15,7 +15,7 @@ public class Place {
     @Column(name = "name")
     private String name;
     @Column(name = "address")
-    private String address;
+    private String vicinity;
 
     @Embedded
     private Geometry geometry;
