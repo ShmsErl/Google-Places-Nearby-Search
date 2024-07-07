@@ -6,6 +6,7 @@ import lombok.*;
 @Entity
 @Table(name = "places")
 @NoArgsConstructor
+@Builder
 @Getter
 @Setter
 public class Place {
@@ -24,6 +25,7 @@ public class Place {
     @Embeddable
     @NoArgsConstructor
     @AllArgsConstructor
+    @Builder
     @Getter
     @Setter
     public static class Geometry {
@@ -34,6 +36,7 @@ public class Place {
         @Embeddable
         @NoArgsConstructor
         @AllArgsConstructor
+        @Builder
         @Getter
         @Setter
         public static class Location {
