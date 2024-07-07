@@ -21,7 +21,14 @@ public class Place {
     private Geometry geometry;
 
 
-    // Nested Geometry class
+    public Place(String placeId, String name, String address, Geometry geometry) {
+        this.placeId = placeId;
+        this.name = name;
+        this.vicinity = address;
+        this.geometry = geometry;
+    }
+
+
     @Embeddable
     @NoArgsConstructor
     @AllArgsConstructor
@@ -32,7 +39,7 @@ public class Place {
         @Embedded
         private Location location;
 
-        // Nested Location class
+
         @Embeddable
         @NoArgsConstructor
         @AllArgsConstructor
@@ -44,13 +51,6 @@ public class Place {
             private double lng;
 
         }
-    }
-
-    public Place(String placeId, String name, String address, Geometry geometry) {
-        this.placeId = placeId;
-        this.name = name;
-        this.vicinity = address;
-        this.geometry = geometry;
     }
 
 
