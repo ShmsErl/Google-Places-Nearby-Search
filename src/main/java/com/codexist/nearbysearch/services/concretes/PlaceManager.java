@@ -24,6 +24,7 @@ public class PlaceManager implements PlaceService {
 
     private final RestTemplate restTemplate;
     private final PlaceRepository placeRepository;
+    private final PlaceConverter placeConverter;
 
 
     @Value("${google.places.api.key}")
@@ -32,11 +33,30 @@ public class PlaceManager implements PlaceService {
 
 
     @Autowired
-    public PlaceManager(RestTemplate restTemplate, PlaceRepository placeRepository) {
+    public PlaceManager(RestTemplate restTemplate, PlaceRepository placeRepository, PlaceConverter placeConverter) {
         this.restTemplate = restTemplate;
         this.placeRepository = placeRepository;
-
+        this.placeConverter = placeConverter;
     }
+
+
+    @Transactional
+    public PlaceResponseDto savePlacesFromApiToDatabase(double latitude, double longitude, int radius)  {
+        PlaceResponseDto placeResponseDto = searchNearbyPlaces(latitude, longitude, radius);
+
+        if (placeResponseDto != null && !placeResponseDto.getResults().isEmpty()) {
+
+
+            for (PlaceDto placeDto : placeResponseDto.getResults()) {
+                Place place = placeConverter.convertToPlace(placeDto);
+                placeRepository.save(place);
+            }
+        }
+
+        return placeResponseDto;
+    }
+
+
 
     public PlaceResponseDto searchNearbyPlaces(double latitude, double longitude, int radius)  {
 
