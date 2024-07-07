@@ -25,4 +25,13 @@ public class PlaceController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/save")
+    public ResponseEntity<PlaceResponseDto> savePlaces(
+            @RequestParam double latitude,
+            @RequestParam double longitude,
+            @RequestParam int radius)  {
+
+        return ResponseEntity.ok(placeService.savePlacesFromApiToDatabase(latitude, longitude, radius));
+    }
+
 }
