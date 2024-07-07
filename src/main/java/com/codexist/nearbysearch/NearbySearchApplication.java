@@ -21,7 +21,7 @@ public class NearbySearchApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
        Place test =  Place.builder()
                 .placeId("ChIJAUn6iyYSKxURNGAXrEYxMBo")
-                .address("Gümüşsuyu, Sıraselviler Caddesi No:5")
+                .vicinity("Gümüşsuyu, Sıraselviler Caddesi No:5")
                 .name("Taxim Hill Hotel")
                 .geometry(Place.Geometry.builder()
                         .location(Place.Geometry.Location.builder()
