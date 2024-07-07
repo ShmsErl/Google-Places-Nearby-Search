@@ -1,4 +1,4 @@
-package com.codexist.nearbysearch.dto;
+package com.codexist.nearbysearch.dto.requests;
 
 public record NearbySearchRequest(
         double latitude,
