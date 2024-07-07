@@ -26,6 +26,8 @@ public class PlaceManager implements PlaceService {
     private final PlaceRepository placeRepository;
 
 
+    @Value("${google.places.api.key}")
+    private String API_KEY;
 
 
 
@@ -34,6 +36,16 @@ public class PlaceManager implements PlaceService {
         this.restTemplate = restTemplate;
         this.placeRepository = placeRepository;
 
+    }
+
+    public PlaceResponseDto searchNearbyPlaces(double latitude, double longitude, int radius)  {
+
+        String locationParam = String.format(Locale.US, "%f,%f", latitude, longitude);
+        String url = String.format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=%s&radius=%d&key=%s",
+                locationParam, radius, API_KEY);
+
+
+        return restTemplate.getForObject(url, PlaceResponseDto.class);
     }
 
 
