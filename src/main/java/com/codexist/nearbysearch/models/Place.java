@@ -21,11 +21,17 @@ public class Place {
     private Geometry geometry;
 
 
-    public Place(String placeId, String name, String address, Geometry geometry) {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "search_request_id")
+    private SearchRequest searchRequestId;
+
+
+    public Place(String placeId, String name, String address, Geometry geometry,SearchRequest searchRequest) {
         this.placeId = placeId;
         this.name = name;
         this.vicinity = address;
         this.geometry = geometry;
+        this.searchRequestId =searchRequest;
     }
 
 
