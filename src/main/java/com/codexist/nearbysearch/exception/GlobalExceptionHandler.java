@@ -38,6 +38,18 @@ import java.util.Map;
                     .body(errorDetails);
         }
 
+        @ExceptionHandler(NotFoundException.class)
+        public ResponseEntity<Map<String, String>> handleNotFoundException(Exception ex) {
+            Map<String, String> errorDetails = new HashMap<>();
+            errorDetails.put("status", HttpStatus.NOT_FOUND.toString());
+            errorDetails.put("error", "NotFound Error");
+            errorDetails.put("message", ex.getMessage());
+
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(errorDetails);
+        }
+
         @ExceptionHandler(Exception.class)
         public ResponseEntity<Map<String, String>> handleGenericException(Exception ex) {
             Map<String, String> errorDetails = new HashMap<>();
