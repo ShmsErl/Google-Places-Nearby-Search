@@ -1,9 +1,10 @@
 package com.codexist.nearbysearch.dto.responses;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 
 import java.util.List;
-
+@Builder
 public class PlaceResponseDto {
 
     @JsonProperty("html_attributions")

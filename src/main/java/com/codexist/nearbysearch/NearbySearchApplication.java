@@ -1,7 +1,7 @@
 package com.codexist.nearbysearch;
 
 import com.codexist.nearbysearch.models.Place;
-import com.codexist.nearbysearch.repositories.PlaceRepository;
+import com.codexist.nearbysearch.repositories.GooglePlaceRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -11,7 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @AllArgsConstructor
 public class NearbySearchApplication implements CommandLineRunner {
 
-    private final PlaceRepository placeRepository;
+    private final GooglePlaceRepository placeRepository;
 
     public static void main(String[] args) {
         SpringApplication.run(NearbySearchApplication.class, args);

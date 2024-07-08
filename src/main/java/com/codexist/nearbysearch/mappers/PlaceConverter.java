@@ -26,6 +26,7 @@ public class PlaceConverter {
                 .name(place.getName())
                 .vicinity(place.getVicinity())
                 .geometry(place.getGeometry())
+                .searchRequestId(place.getSearchRequestId().getId())
                 .build();
     }
 

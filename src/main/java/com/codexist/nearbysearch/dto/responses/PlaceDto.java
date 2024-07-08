@@ -21,6 +21,16 @@ public class PlaceDto {
     @JsonProperty("geometry")
     private Place.Geometry geometry;
 
+    public long getSearchRequestId() {
+        return searchRequestId;
+    }
+
+    public void setSearchRequestId(long searchRequestId) {
+        this.searchRequestId = searchRequestId;
+    }
+
+    private long searchRequestId;
+
 
 
     public String getPlaceId() {
