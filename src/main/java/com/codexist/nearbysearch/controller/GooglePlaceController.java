@@ -1,7 +1,7 @@
 package com.codexist.nearbysearch.controller;
 
 import com.codexist.nearbysearch.dto.responses.PlaceResponseDto;
-import com.codexist.nearbysearch.services.abstracts.PlaceService;
+import com.codexist.nearbysearch.services.abstracts.GooglePlaceService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/v1/nearby-search")
+@RequestMapping("api/v1/nearby")
 @AllArgsConstructor
-public class PlaceController {
+public class GooglePlaceController {
 
-    private final PlaceService placeService;
+    private final GooglePlaceService placeService;
 
     @GetMapping
     public ResponseEntity<PlaceResponseDto> getNearbyPlaces(
@@ -25,13 +25,6 @@ public class PlaceController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/save")
-    public ResponseEntity<PlaceResponseDto> savePlaces(
-            @RequestParam double latitude,
-            @RequestParam double longitude,
-            @RequestParam int radius)  {
 
-        return ResponseEntity.ok(placeService.savePlacesFromApiToDatabase(latitude, longitude, radius));
-    }
 
 }

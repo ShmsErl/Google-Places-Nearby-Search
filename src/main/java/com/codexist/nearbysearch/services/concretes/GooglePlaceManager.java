@@ -4,26 +4,24 @@ import com.codexist.nearbysearch.dto.responses.PlaceDto;
 import com.codexist.nearbysearch.dto.responses.PlaceResponseDto;
 import com.codexist.nearbysearch.mappers.PlaceConverter;
 import com.codexist.nearbysearch.models.Place;
-import com.codexist.nearbysearch.repositories.PlaceRepository;
-import com.codexist.nearbysearch.services.abstracts.PlaceService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.codexist.nearbysearch.models.SearchRequest;
+import com.codexist.nearbysearch.repositories.GooglePlaceRepository;
+import com.codexist.nearbysearch.services.abstracts.GooglePlaceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-
+import java.util.List;
 import java.util.Locale;
 
 @Service
-public class PlaceManager implements PlaceService {
+public class GooglePlaceManager implements GooglePlaceService {
 
 
     private final RestTemplate restTemplate;
-    private final PlaceRepository placeRepository;
+    private final GooglePlaceRepository placeRepository;
     private final PlaceConverter placeConverter;
 
 
@@ -31,9 +29,8 @@ public class PlaceManager implements PlaceService {
     private String API_KEY;
 
 
-
     @Autowired
-    public PlaceManager(RestTemplate restTemplate, PlaceRepository placeRepository, PlaceConverter placeConverter) {
+    public GooglePlaceManager(RestTemplate restTemplate, GooglePlaceRepository placeRepository, PlaceConverter placeConverter) {
         this.restTemplate = restTemplate;
         this.placeRepository = placeRepository;
         this.placeConverter = placeConverter;
@@ -41,7 +38,7 @@ public class PlaceManager implements PlaceService {
 
 
     @Transactional
-    public PlaceResponseDto savePlacesFromApiToDatabase(double latitude, double longitude, int radius)  {
+    public PlaceResponseDto savePlacesFromApiToDatabase(double latitude, double longitude, int radius, SearchRequest searchRequest) {
         PlaceResponseDto placeResponseDto = searchNearbyPlaces(latitude, longitude, radius);
 
         if (placeResponseDto != null && !placeResponseDto.getResults().isEmpty()) {
@@ -49,6 +46,7 @@ public class PlaceManager implements PlaceService {
 
             for (PlaceDto placeDto : placeResponseDto.getResults()) {
                 Place place = placeConverter.convertToPlace(placeDto);
+                place.setSearchRequestId(searchRequest);
                 placeRepository.save(place);
             }
         }
@@ -57,8 +55,7 @@ public class PlaceManager implements PlaceService {
     }
 
 
-
-    public PlaceResponseDto searchNearbyPlaces(double latitude, double longitude, int radius)  {
+    public PlaceResponseDto searchNearbyPlaces(double latitude, double longitude, int radius) {
 
         String locationParam = String.format(Locale.US, "%f,%f", latitude, longitude);
         String url = String.format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=%s&radius=%d&key=%s",
@@ -68,12 +65,13 @@ public class PlaceManager implements PlaceService {
         return restTemplate.getForObject(url, PlaceResponseDto.class);
     }
 
+    @Override
+    public PlaceResponseDto getAllPlacesAccordingToSearchRequest(SearchRequest searchRequest) {
 
+        List<PlaceDto> places = this.placeRepository.findBySearchRequest(searchRequest)
+                .stream().map(this.placeConverter::convertToPlaceDto
+                ).toList();
 
-
-
-
-
-
-
+        return PlaceResponseDto.builder().htmlAttributions(List.of("Connected to Database")).results(places).status("Ok").build();
+    }
 }
